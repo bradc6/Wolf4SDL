@@ -18,7 +18,7 @@
 #	include <string.h>
 #	include <stdarg.h>
 #endif
-#include <SDL.h>
+#include <SDL/SDL.h>
 
 #if !defined O_BINARY
 #	define O_BINARY 0

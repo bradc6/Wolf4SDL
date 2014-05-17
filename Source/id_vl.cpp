@@ -152,8 +152,6 @@ void	VL_SetVGAPlaneMode (void)
           usedoublebuffering = false;
     SDL_ShowCursor(SDL_DISABLE);
 
-    #pragma message ("Verify me")
-    //SDL_SetColors(screen, gamepal, 0, 256);
     SDL_SetPaletteColors(screen->format->palette, gamepal, 0, 256);
 
     
@@ -166,9 +164,7 @@ void	VL_SetVGAPlaneMode (void)
         printf("Unable to create screen buffer surface: %s\n", SDL_GetError());
         exit(1);
     }
-    #pragma message ("Verify me")
     SDL_SetPaletteColors(screenBuffer->format->palette, gamepal, 0, 256);
-    //SDL_SetColors(screenBuffer, gamepal, 0, 256);
 
     screenPitch = screen->pitch;
     bufferPitch = screenBuffer->pitch;

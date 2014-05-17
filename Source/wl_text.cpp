@@ -728,6 +728,10 @@ void ShowArticle (char *article)
                 }
                 TicDelay(20);
                 break;
+            default:
+            {
+                break;
+            }
         }
     } while (LastScan != sc_Escape && !ci.button1);
 

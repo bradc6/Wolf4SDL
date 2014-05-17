@@ -375,8 +375,7 @@ void IN_ProcessEvents()
 //	IN_Startup() - Starts up the Input Mgr
 //
 ///////////////////////////////////////////////////////////////////////////
-void
-IN_Startup(void)
+void IN_Startup(void)
 {
 	if (IN_Started)
 		return;
@@ -401,9 +400,7 @@ IN_Startup(void)
     if(fullscreen || forcegrabmouse)
     {
         GrabInput = true;
-#pragma message ("Verify Me!")
         SDL_SetRelativeMouseMode(SDL_TRUE);
-        //SDL_WM_GrabInput(SDL_GRAB_ON);
     }
 
     // I didn't find a way to ask libSDL whether a mouse is present, yet...

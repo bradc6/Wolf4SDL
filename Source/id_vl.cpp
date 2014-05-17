@@ -249,26 +249,20 @@ void VL_SetColor	(int color, int red, int green, int blue)
 
     if(screenBits == 8)
     {
-        #pragma message ("Uncomment me")
-        //SDL_SetPalette(screen, SDL_PHYSPAL, &col, color, 1);
+        SDL_SetPaletteColors(screen->format->palette, &col, color, 1);
     }
     else
     {
-        #pragma message ("Uncomment me")
     #pragma message ("VIDEO Verify Me")
-        //SDL_SetPalette(screen, SDL_PHYSPAL, &col, color, 1);
-        //SDL_SetPalette(curSurface, SDL_LOGPAL, &col, color, 1);
-       
+
+        SDL_SetPaletteColors(screen->format->palette, &col, color, 1);
+        SDL_SetPaletteColors(curSurface->format->palette, &col, color, 1);
+        
         
         SDL_Texture *test = SDL_CreateTextureFromSurface(render, curSurface);
         SDL_RenderCopy(render, test, NULL, NULL);
         SDL_RenderPresent(render);
         SDL_DestroyTexture(test);
-        // SDL_BlitSurface(curSurface, NULL, screen, NULL);
-        //SDL_Flip(screen);
-        
-        
-        
     }
 }
 
@@ -306,13 +300,11 @@ void VL_SetPalette (SDL_Color *palette, bool forceupdate)
 
     if(screenBits == 8)
     {
-        #pragma message ("Uncomment me")
-        //SDL_SetPalette(screen, SDL_PHYSPAL, palette, 0, 256);
+        SDL_SetPaletteColors(screen->format->palette, palette, 0, 256);
     }
     else
     {
-        #pragma message ("Uncomment me")
-        //SDL_SetPalette(curSurface, SDL_LOGPAL, palette, 0, 256);
+        SDL_SetPaletteColors(curSurface->format->palette, palette, 0, 256);
         if(forceupdate)
         {
             #pragma message ("VIDEO Verify me")

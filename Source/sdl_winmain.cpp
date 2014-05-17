@@ -29,7 +29,7 @@
 #endif
 
 /* Include the SDL main definition header */
-#include "SDL.h"
+#include <SDL2/SDL.h>
 #include "SDL_main.h"
 
 #ifdef main

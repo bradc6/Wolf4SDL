@@ -45,13 +45,13 @@ else()
     list(APPEND Wolf4SDLLinkerDirectories "~/dev/fakeroot/lib")
 endif()
 
-find_package(SDL REQUIRED)
-list(APPEND Wolf4SDLIncludeDirectories"${SDL_INCLUDE_DIR}")
-list(APPEND Wolf4SDLLinkerFlags "${SDL_LIBRARY}")
+find_package(SDL2 REQUIRED)
+list(APPEND Wolf4SDLIncludeDirectories"${SDL2_INCLUDE_DIR}")
+list(APPEND Wolf4SDLLinkerFlags "${SDL2_LIBRARY}")
 
-find_package(SDL_mixer REQUIRED)
-list(APPEND Wolf4SDLIncludeDirectories "${SDLMIXER_INCLUDE_DIR}")
-list(APPEND Wolf4SDLLinkerFlags "${SDL_MIXER_LIBRARIES}")
+find_package(SDL2_mixer REQUIRED)
+list(APPEND Wolf4SDLIncludeDirectories "${SDLMIXER2_INCLUDE_DIR}")
+list(APPEND Wolf4SDLLinkerFlags "${SDL2_MIXER_LIBRARIES}")
 
 #Include all the found Include/Linker directories
 include_directories(${Wolf4SDLIncludeDirectories})

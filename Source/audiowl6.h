@@ -4,7 +4,8 @@
 // Created Tue Jul 14 15:04:53 1992
 //
 /////////////////////////////////////////////////
-
+#ifndef audiowl6
+#define audiowl6
 //
 // Sound names & indexes
 //
@@ -151,3 +152,4 @@ typedef enum {
 // Thanks for playing with MUSE!
 //
 /////////////////////////////////////////////////
+#endif

@@ -115,8 +115,9 @@ void VW_MeasurePropString (const char *string, word *width, word *height)
 
 void VH_UpdateScreen()
 {
-	SDL_BlitSurface(screenBuffer, NULL, screen, NULL);
-	SDL_Flip(screen);
+        #pragma message ("UNcomment me")
+	//SDL_BlitSurface(screenBuffer, NULL, screen, NULL);
+	//SDL_Flip(screen);
 }
 
 
@@ -231,13 +232,15 @@ void LoadLatchMem (void)
 //
 // tile 8s
 //
-    surf = SDL_CreateRGBSurface(SDL_HWSURFACE, 8*8,
-        ((NUMTILE8 + 7) / 8) * 8, 8, 0, 0, 0, 0);
+        #pragma message ("UNcomment me")
+    //surf = SDL_CreateRGBSurface(SDL_HWSURFACE, 8*8,
+    //    ((NUMTILE8 + 7) / 8) * 8, 8, 0, 0, 0, 0);
     if(surf == NULL)
     {
         Quit("Unable to create surface for tiles!");
     }
-    SDL_SetColors(surf, gamepal, 0, 256);
+        #pragma message ("UNcomment me")
+    //SDL_SetColors(surf, gamepal, 0, 256);
 
 	latchpics[0] = surf;
 	CA_CacheGrChunk (STARTTILE8);
@@ -260,12 +263,14 @@ void LoadLatchMem (void)
 	{
 		width = pictable[i-STARTPICS].width;
 		height = pictable[i-STARTPICS].height;
-		surf = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 8, 0, 0, 0, 0);
+		#pragma message ("UNcomment me")
+        //surf = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 8, 0, 0, 0, 0);
         if(surf == NULL)
         {
             Quit("Unable to create surface for picture!");
         }
-        SDL_SetColors(surf, gamepal, 0, 256);
+        #pragma message ("UNcomment me")
+        //SDL_SetColors(surf, gamepal, 0, 256);
 
 		latchpics[2+i-start] = surf;
 		CA_CacheGrChunk (i);
@@ -356,12 +361,13 @@ boolean FizzleFade (SDL_Surface *source, int x1, int y1,
         if(abortable && IN_CheckAck ())
         {
             VL_UnlockSurface(source);
-            SDL_BlitSurface(source, NULL, screen, NULL);
-            SDL_Flip(screen);
+            #pragma message ("UNcomment me")
+            //SDL_BlitSurface(source, NULL, screen, NULL);
+            //SDL_Flip(screen);
             return true;
         }
-
-        byte *destptr = VL_LockSurface(screen);
+    #pragma message ("UNcomment me")
+        //byte *destptr = VL_LockSurface(screen);
 
         rndval = lastrndval;
 
@@ -398,15 +404,17 @@ boolean FizzleFade (SDL_Surface *source, int x1, int y1,
 
                 if(screenBits == 8)
                 {
-                    *(destptr + (y1 + y) * screen->pitch + x1 + x)
-                        = *(srcptr + (y1 + y) * source->pitch + x1 + x);
+                    #pragma message ("UNcomment me")
+                    //*(destptr + (y1 + y) * screen->pitch + x1 + x)
+                    //    = *(srcptr + (y1 + y) * source->pitch + x1 + x);
                 }
                 else
                 {
                     byte col = *(srcptr + (y1 + y) * source->pitch + x1 + x);
-                    uint32_t fullcol = SDL_MapRGB(screen->format, curpal[col].r, curpal[col].g, curpal[col].b);
-                    memcpy(destptr + (y1 + y) * screen->pitch + (x1 + x) * screen->format->BytesPerPixel,
-                        &fullcol, screen->format->BytesPerPixel);
+                    #pragma message ("UNcomment me")
+                    //uint32_t fullcol = SDL_MapRGB(screen->format, curpal[col].r, curpal[col].g, curpal[col].b);
+                    //memcpy(destptr + (y1 + y) * screen->pitch + (x1 + x) * screen->format->BytesPerPixel,
+                    //    &fullcol, screen->format->BytesPerPixel);
                 }
 
                 if(rndval == 0)		// entire sequence has been completed
@@ -419,8 +427,9 @@ boolean FizzleFade (SDL_Surface *source, int x1, int y1,
         // If there is no double buffering, we always use the "first frame" case
         if(usedoublebuffering) first = 0;
 
-        VL_UnlockSurface(screen);
-        SDL_Flip(screen);
+        #pragma message ("UNcomment me")
+        //VL_UnlockSurface(screen);
+        //SDL_Flip(screen);
 
         frame++;
         Delay(frame - GetTimeCount());        // don't go too fast
@@ -428,8 +437,11 @@ boolean FizzleFade (SDL_Surface *source, int x1, int y1,
 
 finished:
     VL_UnlockSurface(source);
-    VL_UnlockSurface(screen);
-    SDL_BlitSurface(source, NULL, screen, NULL);
-    SDL_Flip(screen);
+    #pragma message ("UNcomment me")
+    //VL_UnlockSurface(screen);
+    #pragma message ("UNcomment me")
+    //    SDL_BlitSurface(source, NULL, screen, NULL);
+    #pragma message ("UNcomment me")
+//    SDL_Flip(screen);
     return false;
 }

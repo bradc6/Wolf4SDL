@@ -1,5 +1,7 @@
 // ID_VL.H
 
+#ifndef ID_VL
+#define ID_VL
 // wolf compatability
 
 void Quit (const char *error,...);
@@ -11,7 +13,8 @@ void Quit (const char *error,...);
 
 //===========================================================================
 
-extern SDL_Surface *screen, *screenBuffer, *curSurface;
+extern SDL_Window *screen;
+extern SDL_Surface *screenBuffer, *curSurface;
 
 extern  boolean  fullscreen, usedoublebuffering;
 extern  unsigned screenWidth, screenHeight, screenBits, screenPitch, bufferPitch, curPitch;
@@ -99,3 +102,5 @@ void inline VL_LatchToScreen (SDL_Surface *source, int x, int y)
     VL_LatchToScreenScaledCoord(source,0,0,source->w,source->h,
         scaleFactor*x,scaleFactor*y);
 }
+
+#endif

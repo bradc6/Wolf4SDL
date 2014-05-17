@@ -1,3 +1,6 @@
+#ifndef f_spear
+#define f_spear
+
 #define STR_ENDGAME1	"We owe you a great debt, Mr. Blazkowicz."
 #define STR_ENDGAME2	"You have served your country well."
 #define STR_ENDGAME3	"With the spear gone, the Allies will finally"
@@ -74,3 +77,4 @@
 #define STR_MAN4	    "on?"
 
 #define STR_ID1		    "Which member of Id Software:"
+#endif

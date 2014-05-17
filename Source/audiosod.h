@@ -5,6 +5,9 @@
 //
 /////////////////////////////////////////////////
 
+#ifndef audiosod
+#define audiosod
+
 #define NUMSOUNDS		    81
 #define NUMSNDCHUNKS	    267
 
@@ -140,3 +143,4 @@ typedef enum {
 // Thanks for playing with MUSE!
 //
 /////////////////////////////////////////////////
+#endif

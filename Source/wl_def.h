@@ -11,14 +11,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #if defined(_arch_dreamcast)
-#	include <string.h>
-#	include "dc/dc_main.h"
+    #include <string.h>
+    #include "dc/dc_main.h"
 #elif !defined(_WIN32)
 #	include <stdint.h>
 #	include <string.h>
 #	include <stdarg.h>
 #endif
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 #if !defined O_BINARY
 #	define O_BINARY 0

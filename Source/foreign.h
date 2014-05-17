@@ -1,3 +1,6 @@
+#ifndef foreign
+#define foreign
+
 #define QUITSUR	    "Are you sure you want\n"\
 		            "to quit this great game?"
 
@@ -128,4 +131,5 @@
 #define ENDSTR7 "Heroes, press " NOBUTTONNAME ".\nWimps, press " YESBUTTONNAME "."
 #define ENDSTR8 "You are at an intersection.\nA sign says, 'Press " YESBUTTONNAME " to quit.'\n>"
 #define ENDSTR9 "For guns and glory, press " NOBUTTONNAME ".\nFor work and worry, press " YESBUTTONNAME "."
+#endif
 #endif

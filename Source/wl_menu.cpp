@@ -333,6 +333,9 @@ static byte *ExtScanNames[] =   // Names corresponding to ExtScanCodes
                                         };*/
 
 #else
+#pragma message ("replace me with below")
+static const char* const ScanNames[1] = { "ERROR" };
+/*
 static const char* const ScanNames[SDLK_LAST] =
     {
         "?","?","?","?","?","?","?","?",                                //   0
@@ -377,7 +380,7 @@ static const char* const ScanNames[SDLK_LAST] =
         "?","?","?","?","PrtSc","?","?","?",                            // 312
         "?","?"                                                         // 320
     };
-
+*/
 #endif
 
 ////////////////////////////////////////////////////////////////////

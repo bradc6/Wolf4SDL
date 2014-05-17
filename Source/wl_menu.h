@@ -1,6 +1,9 @@
 //
 // WL_MENU.H
 //
+#ifndef WOLFMENU
+#define WOLFMENU
+
 #ifdef SPEAR
 
 #define BORDCOLOR       0x99
@@ -235,3 +238,5 @@ extern LRstruct LevelRatios[];
 void Write (int x,int y,const char *string);
 void NonShareware(void);
 int GetYorN(int x,int y,int pic);
+
+#endif

@@ -253,8 +253,7 @@ static void processEvent(SDL_Event *event)
             if(event->key.keysym.sym==SDLK_SCROLLLOCK || event->key.keysym.sym==SDLK_F12)
             {
                 GrabInput = !GrabInput;
-#pragma message ("Uncomment me!")
-//                SDL_WM_GrabInput(GrabInput ? SDL_GRAB_ON : SDL_GRAB_OFF);
+                SDL_SetRelativeMouseMode(GrabInput ? SDL_TRUE : SDL_FALSE);
                 return;
             }
 
@@ -465,7 +464,7 @@ IN_ReadControl(int player,ControlInfo *info)
 
 	IN_ProcessEvents();
 
-    if (Keyboard[KbdDefs.upleft])
+    /*if (Keyboard[KbdDefs.upleft])
         mx = motion_Left,my = motion_Up;
     else if (Keyboard[KbdDefs.upright])
         mx = motion_Right,my = motion_Up;
@@ -487,7 +486,7 @@ IN_ReadControl(int player,ControlInfo *info)
     if (Keyboard[KbdDefs.button0])
         buttons += 1 << 0;
     if (Keyboard[KbdDefs.button1])
-        buttons += 1 << 1;
+        buttons += 1 << 1;*/
 
 	dx = mx * 127;
 	dy = my * 127;

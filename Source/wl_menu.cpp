@@ -1986,6 +1986,9 @@ MouseSensitivity (int)
                     TicDelay(20);
                 }
                 break;
+                
+                default:
+                break;
         }
 
         if (ci.button0 || Keyboard[sc_Space] || Keyboard[sc_Enter])
@@ -2134,7 +2137,7 @@ CustomControls (int)
 void
 DefineMouseBtns (void)
 {
-    CustomCtrls mouseallowed = { 0, 1, 1, 1 };
+    CustomCtrls mouseallowed = { {0, 1, 1, 1} };
     EnterCtrlData (2, &mouseallowed, DrawCustMouse, PrintCustMouse, MOUSE);
 }
 
@@ -2146,7 +2149,7 @@ DefineMouseBtns (void)
 void
 DefineJoyBtns (void)
 {
-    CustomCtrls joyallowed = { 1, 1, 1, 1 };
+    CustomCtrls joyallowed = { {1, 1, 1, 1} };
     EnterCtrlData (5, &joyallowed, DrawCustJoy, PrintCustJoy, JOYSTICK);
 }
 
@@ -2158,7 +2161,7 @@ DefineJoyBtns (void)
 void
 DefineKeyBtns (void)
 {
-    CustomCtrls keyallowed = { 1, 1, 1, 1 };
+    CustomCtrls keyallowed = { {1, 1, 1, 1} };
     EnterCtrlData (8, &keyallowed, DrawCustKeybd, PrintCustKeybd, KEYBOARDBTNS);
 }
 
@@ -2170,7 +2173,7 @@ DefineKeyBtns (void)
 void
 DefineKeyMove (void)
 {
-    CustomCtrls keyallowed = { 1, 1, 1, 1 };
+    CustomCtrls keyallowed = { {1, 1, 1, 1} };
     EnterCtrlData (10, &keyallowed, DrawCustKeys, PrintCustKeys, KEYBOARDMOVE);
 }
 
@@ -2238,7 +2241,7 @@ EnterCtrlData (int index, CustomCtrls * cust, void (*DrawRtn) (int), void (*Prin
         //
         // CHANGE BUTTON VALUE?
         //
-        if ((type != KEYBOARDBTNS && type != KEYBOARDMOVE) && (ci.button0 | ci.button1 | ci.button2 | ci.button3) ||
+        if (((type != KEYBOARDBTNS && type != KEYBOARDMOVE) && (ci.button0 | ci.button1 | ci.button2 | ci.button3)) ||
             ((type == KEYBOARDBTNS || type == KEYBOARDMOVE) && LastScan == sc_Enter))
         {
             lastFlashTime = GetTimeCount();
@@ -2863,6 +2866,8 @@ CP_ChangeView (int)
                 SD_PlaySound (HITWALLSND);
                 TicDelay (10);
                 break;
+            default:
+                break;
         }
 
         if (ci.button0 || Keyboard[sc_Enter])
@@ -3398,12 +3403,15 @@ HandleMenu (CP_iteminfo * item_i, CP_itemtype * items, void (*routine) (int w))
                 //
                 TicDelay (20);
                 break;
+                
+                default:
+                    break;
         }
 
         if (ci.button0 || Keyboard[sc_Space] || Keyboard[sc_Enter])
             exit = 1;
 
-        if (ci.button1 && !Keyboard[sc_Alt] || Keyboard[sc_Escape])
+        if ((ci.button1 && !Keyboard[sc_Alt]) || Keyboard[sc_Escape])
             exit = 2;
 
     }

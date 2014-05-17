@@ -363,11 +363,19 @@ void T_Projectile (objtype *ob)
         case fireobj:
             damage = (US_RndT() >>3);
             break;
+                
+            default:
+            {
+                damage = 0;
+                break;
+            }
         }
 
+        
         TakeDamage (damage,ob);
         ob->state = NULL;               // mark for removal
         return;
+        
     }
 
     ob->tilex = (short)(ob->x >> TILESHIFT);
@@ -882,6 +890,9 @@ void SpawnStand (enemy_t which, int tilex, int tiley, int dir)
             if (!loadedgame)
                 gamestate.killtotal++;
             break;
+            
+        default:
+            break;
     }
 
 
@@ -1024,6 +1035,9 @@ void SpawnPatrol (enemy_t which, int tilex, int tiley, int dir)
             if (!loadedgame)
                 gamestate.killtotal++;
             break;
+            
+        default:
+            break;
     }
 
     newobj->obclass = (classtype)(guardobj+which);
@@ -1082,6 +1096,8 @@ void A_DeathScream (objtype *ob)
             case dogobj:
                 PlaySoundLocActor(DEATHSCREAM6SND,ob);
                 return;
+            default:
+                break;
         }
     }
 #endif
@@ -1106,11 +1122,11 @@ void A_DeathScream (objtype *ob)
 #endif
             };
 
-#ifndef UPLOAD
+    #ifndef UPLOAD
             PlaySoundLocActor(sounds[US_RndT()%8],ob);
-#else
+    #else
             PlaySoundLocActor(sounds[US_RndT()%2],ob);
-#endif
+    #endif
             break;
         }
         case officerobj:
@@ -1122,7 +1138,7 @@ void A_DeathScream (objtype *ob)
         case dogobj:
             PlaySoundLocActor(DOGDEATHSND,ob);      // JAB
             break;
-#ifndef SPEAR
+    #ifndef SPEAR
         case bossobj:
             SD_PlaySound(MUTTISND);                         // JAB
             break;
@@ -1138,7 +1154,7 @@ void A_DeathScream (objtype *ob)
         case realhitlerobj:
             SD_PlaySound(EVASND);
             break;
-#ifndef APOGEE_1_0
+    #ifndef APOGEE_1_0
         case gretelobj:
             SD_PlaySound(MEINSND);
             break;
@@ -1148,8 +1164,8 @@ void A_DeathScream (objtype *ob)
         case fatobj:
             SD_PlaySound(ROSESND);
             break;
-#endif
-#else
+    #endif
+    #else
         case spectreobj:
             SD_PlaySound(GHOSTFADESND);
             break;
@@ -1168,7 +1184,9 @@ void A_DeathScream (objtype *ob)
         case deathobj:
             SD_PlaySound(KNIGHTDEATHSND);
             break;
-#endif
+    #endif
+        default:
+            break;
     }
 }
 
@@ -3128,7 +3146,7 @@ void T_Chase (objtype *ob)
                 case ssobj:
                     NewState (ob,&s_ssshoot1);
                     break;
-#ifndef SPEAR
+            #ifndef SPEAR
                 case bossobj:
                     NewState (ob,&s_bossshoot1);
                     break;
@@ -3141,7 +3159,7 @@ void T_Chase (objtype *ob)
                 case realhitlerobj:
                     NewState (ob,&s_hitlershoot1);
                     break;
-#else
+            #else
                 case angelobj:
                     NewState (ob,&s_angelshoot1);
                     break;
@@ -3157,7 +3175,9 @@ void T_Chase (objtype *ob)
                 case deathobj:
                     NewState (ob,&s_deathshoot1);
                     break;
-#endif
+            #endif
+                default:
+                    break;
             }
             return;
         }
@@ -3879,7 +3899,7 @@ void    A_StartDeathCam (objtype *ob)
 
     switch (ob->obclass)
     {
-#ifndef SPEAR
+    #ifndef SPEAR
         case schabbobj:
             NewState (ob,&s_schabbdeathcam);
             break;
@@ -3892,7 +3912,9 @@ void    A_StartDeathCam (objtype *ob)
         case fatobj:
             NewState (ob,&s_fatdeathcam);
             break;
-#endif
+    #endif
+        default:
+            break;
     }
 }
 

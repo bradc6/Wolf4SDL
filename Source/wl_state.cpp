@@ -245,6 +245,9 @@ boolean TryWalk (objtype *ob)
                 ob->tilex--;
                 ob->tiley--;
                 break;
+            default:
+                break;
+                
         }
     }
     else
@@ -935,7 +938,7 @@ void KillActor (objtype *ob)
             gamestate.killy = player->y;
             NewState (ob,&s_hitlerdie1);
             break;
-#else
+    #else
         case spectreobj:
             if (ob->flags&FL_BONUS)
             {
@@ -973,7 +976,10 @@ void KillActor (objtype *ob)
             NewState (ob,&s_deathdie1);
             PlaceItemType (bo_key1,tilex,tiley);
             break;
-#endif
+            
+    #endif
+        default:
+            break;
     }
 
     gamestate.killcount++;
@@ -1045,6 +1051,9 @@ void DamageActor (objtype *ob, unsigned damage)
                 else
                     NewState (ob,&s_sspain1);
 
+                break;
+                
+            default:
                 break;
         }
     }
@@ -1282,6 +1291,9 @@ boolean CheckSight (objtype *ob)
             if (DEMOCOND_SDL && -deltax > deltay)
                 return false;
             break;
+            
+        default:
+            break;
     }
 
     //
@@ -1429,6 +1441,9 @@ void FirstSighting (objtype *ob)
             ob->speed = 2048;                       // go faster when chasing player
             break;
 #endif
+            
+        default:
+            break;
     }
 
     if (ob->distance < 0)
@@ -1519,6 +1534,8 @@ boolean SightPlayer (objtype *ob)
             case willobj:
             case deathobj:
                 ob->temp2 = 1;
+                break;
+            default:
                 break;
         }
         return false;

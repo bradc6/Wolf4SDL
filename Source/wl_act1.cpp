@@ -183,6 +183,9 @@ void SpawnStatic (int tilex, int tiley, int type)
             laststatobj->flags = FL_BONUS;
             laststatobj->itemnumber = statinfo[type].type;
             break;
+            
+        default:
+            break;
     }
 
     laststatobj->flags |= statinfo[type].specialFlags;
@@ -723,6 +726,9 @@ void MoveDoors (void)
             case dr_closing:
                 DoorClosing(door);
                 break;
+                
+            default:
+                break;
         }
     }
 }
@@ -844,7 +850,7 @@ void MovePWalls (void)
             pwally += dy;
 
             if (actorat[pwallx+dx][pwally+dy]
-                || xl<=pwallx+dx && pwallx+dx<=xh && yl<=pwally+dy && pwally+dy<=yh)
+                || (xl<=pwallx+dx && pwallx+dx<=xh && yl<=pwally+dy && pwally+dy<=yh))
             {
                 pwallstate = 0;
                 tilemap[pwallx][pwally] = oldtile;

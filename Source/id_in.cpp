@@ -37,15 +37,12 @@ boolean forcegrabmouse;
 
 
 // 	Global variables
-#pragma message ("replace me with below")
-volatile boolean Keyboard[5000];
-//volatile boolean    Keyboard[SDLK_LAST];
+volatile boolean    Keyboard[332];
 
 volatile boolean	Paused;
 volatile char		LastASCII;
 volatile ScanCode	LastScan;
 
-//KeyboardDef	KbdDefs = {0x1d,0x38,0x47,0x48,0x49,0x4b,0x4d,0x4f,0x50,0x51};
 static KeyboardDef KbdDefs = {
     sc_Control,             // button0
     sc_Alt,                 // button1
@@ -245,26 +242,30 @@ static void processEvent(SDL_Event *event)
     {
         // exit if the window is closed
         case SDL_QUIT:
+        {
             Quit(NULL);
+        }
 
         // check for keypresses
         case SDL_KEYDOWN:
         {
-            if(event->key.keysym.sym==SDLK_SCROLLLOCK || event->key.keysym.sym==SDLK_F12)
+            //Press ScrollLock or F12 to Grab/Release the mouse from the window
+            if((event->key.keysym.sym == SDLK_SCROLLLOCK) || (event->key.keysym.sym == SDLK_F12))
             {
                 GrabInput = !GrabInput;
                 SDL_SetRelativeMouseMode(GrabInput ? SDL_TRUE : SDL_FALSE);
                 return;
             }
-
+            
+            const Uint8* currentKeyboardState = SDL_GetKeyboardState( NULL );
             LastScan = event->key.keysym.sym;
-#pragma message ("uncomment me")
-            //SDLMod mod = SDL_GetModState();
-           // if(Keyboard[sc_Alt])
-            //{
-              //  if(LastScan==SDLK_F4)
-              //      Quit(NULL);
-            //}
+            SDL_Keymod mod = SDL_GetModState();
+        
+           if((mod & KMOD_ALT) != 0)
+            {
+                if(currentKeyboardState[SDL_SCANCODE_F4])
+                    Quit(NULL);
+            }
 
             if(LastScan == SDLK_KP_ENTER) LastScan = SDLK_RETURN;
             else if(LastScan == SDLK_RSHIFT) LastScan = SDLK_LSHIFT;
@@ -272,16 +273,15 @@ static void processEvent(SDL_Event *event)
             else if(LastScan == SDLK_RCTRL) LastScan = SDLK_LCTRL;
             else
             {
-                #pragma message ("uncomment me")
-                //if((mod & KMOD_NUM) == 0)
-                //{
-                //    switch(LastScan)
-                 //   {
-                 //       case SDLK_KP_2: LastScan = SDLK_DOWN; break;
-                 //       case SDLK_KP_4: LastScan = SDLK_LEFT; break;
-                 //       case SDLK_KP_6: LastScan = SDLK_RIGHT; break;
-                 //       case SDLK_KP_8: LastScan = SDLK_UP; break;
-                  //  }
+                if((mod & KMOD_NUM) == 0)
+                {
+                    switch(LastScan)
+                    {
+                        case SDLK_KP_2: LastScan = SDLK_DOWN; break;
+                        case SDLK_KP_4: LastScan = SDLK_LEFT; break;
+                        case SDLK_KP_6: LastScan = SDLK_RIGHT; break;
+                        case SDLK_KP_8: LastScan = SDLK_UP; break;
+                    }
                 }
             }
 
@@ -289,8 +289,7 @@ static void processEvent(SDL_Event *event)
             if(sym >= 'a' && sym <= 'z')
                 sym -= 32;  // convert to uppercase
 
-            #pragma message ("uncomment me")
-            /*if(mod & (KMOD_SHIFT | KMOD_CAPS))
+            if(mod & (KMOD_SHIFT | KMOD_CAPS))
             {
                 if(sym < lengthof(ShiftNames) && ShiftNames[sym])
                     LastASCII = ShiftNames[sym];
@@ -299,17 +298,17 @@ static void processEvent(SDL_Event *event)
             {
                 if(sym < lengthof(ASCIINames) && ASCIINames[sym])
                     LastASCII = ASCIINames[sym];
-            }*/
-            #pragma message ("uncomment me")
-            //if(LastScan<SDLK_LAST)
-            //    Keyboard[LastScan] = 1;
+            }
+
+            if(LastScan< 332)
+                Keyboard[LastScan] = 1;
             if(LastScan == SDLK_PAUSE)
                 Paused = true;
             break;
 		}
 
-    #pragma message ("uncomment me")
-        /*case SDL_KEYUP:
+
+        case SDL_KEYUP:
         {
             int key = event->key.keysym.sym;
             if(key == SDLK_KP_ENTER) key = SDLK_RETURN;
@@ -330,7 +329,7 @@ static void processEvent(SDL_Event *event)
                 }
             }
 
-            if(key<SDLK_LAST)
+            if(key<332)
                 Keyboard[key] = 0;
             break;
         }
@@ -344,7 +343,7 @@ static void processEvent(SDL_Event *event)
             GP2X_ButtonUp(event->jbutton.button);
             break;
 #endif
-    }*/
+    }
 }
 
 void IN_WaitAndProcessEvents()
@@ -463,6 +462,7 @@ IN_ReadControl(int player,ControlInfo *info)
 	buttons = 0;
 
 	IN_ProcessEvents();
+#pragma message ("Hack Here")
 
     /*if (Keyboard[KbdDefs.upleft])
         mx = motion_Left,my = motion_Up;
@@ -667,6 +667,5 @@ bool IN_IsInputGrabbed()
 
 void IN_CenterMouse()
 {
-#pragma message ("Uncomment me")
-    //SDL_WarpMouse(screenWidth / 2, screenHeight / 2);
+    SDL_WarpMouseInWindow(screenWindow, screenWidth / 2, screenHeight / 2);
 }

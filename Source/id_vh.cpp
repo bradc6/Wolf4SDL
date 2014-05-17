@@ -115,7 +115,6 @@ void VW_MeasurePropString (const char *string, word *width, word *height)
 
 void VH_UpdateScreen()
 {
-    #pragma message ("VIDEO Verify me")
     SDL_Texture *test = SDL_CreateTextureFromSurface(render, screenBuffer);
     SDL_RenderCopy(render, test, NULL, NULL);
 	SDL_RenderPresent(render);
@@ -359,13 +358,10 @@ boolean FizzleFade (SDL_Surface *source, int x1, int y1,
         if(abortable && IN_CheckAck ())
         {
             VL_UnlockSurface(source);
-            #pragma message ("VIDEO Verify me")
             SDL_Texture *test = SDL_CreateTextureFromSurface(render, source);
             SDL_RenderCopy(render, test, NULL, NULL);
             SDL_RenderPresent(render);
             SDL_DestroyTexture(test);
-            //SDL_BlitSurface(source, NULL, screen, NULL);
-            //SDL_Flip(screen);
             return true;
         }
         byte *destptr = VL_LockSurface(screen);
@@ -427,13 +423,11 @@ boolean FizzleFade (SDL_Surface *source, int x1, int y1,
         // If there is no double buffering, we always use the "first frame" case
         if(usedoublebuffering) first = 0;
 
-        #pragma message ("Verify me")
         VL_UnlockSurface(screen);
         SDL_Texture *test = SDL_CreateTextureFromSurface(render, screen);
         SDL_RenderCopy(render, test, NULL, NULL);
         SDL_RenderPresent(render);
         SDL_DestroyTexture(test);
-        //SDL_Flip(screen);
 
         frame++;
         Delay(frame - GetTimeCount());        // don't go too fast
@@ -442,13 +436,10 @@ boolean FizzleFade (SDL_Surface *source, int x1, int y1,
 finished:
     VL_UnlockSurface(source);
     VL_UnlockSurface(screen);
-    #pragma message ("Verify me")
     SDL_Texture *test = SDL_CreateTextureFromSurface(render, source);
     SDL_RenderCopy(render, test, NULL, NULL);
     SDL_RenderPresent(render);
     SDL_DestroyTexture(test);
 
- //   SDL_BlitSurface(source, NULL, screen, NULL);
-//    SDL_Flip(screen);
     return false;
 }

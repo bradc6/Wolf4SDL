@@ -130,10 +130,12 @@ void	VL_SetVGAPlaneMode (void)
                             #endif
                               SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                               screenWidth, screenHeight,
-                              SDL_WINDOW_ALLOW_HIGHDPI);
+                                    SDL_WINDOW_ALLOW_HIGHDPI);
+                              //(SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_FULLSCREEN_DESKTOP));
                               //(SDL_WINDOW_FULLSCREEN ? fullscreen : 0));
     screen = SDL_GetWindowSurface(screenWindow);
     render = SDL_GetRenderer(screenWindow);
+    
     
     if(!render)
     {
@@ -253,8 +255,6 @@ void VL_SetColor	(int color, int red, int green, int blue)
     }
     else
     {
-    #pragma message ("VIDEO Verify Me")
-
         SDL_SetPaletteColors(screen->format->palette, &col, color, 1);
         SDL_SetPaletteColors(curSurface->format->palette, &col, color, 1);
         
@@ -307,13 +307,10 @@ void VL_SetPalette (SDL_Color *palette, bool forceupdate)
         SDL_SetPaletteColors(curSurface->format->palette, palette, 0, 256);
         if(forceupdate)
         {
-            #pragma message ("VIDEO Verify me")
             SDL_Texture *test = SDL_CreateTextureFromSurface(render, curSurface);
             SDL_RenderCopy(render, test, NULL, NULL);
             SDL_RenderPresent(render);
             SDL_DestroyTexture(test);
-            //SDL_BlitSurface(curSurface, NULL, screen, NULL);
-//            SDL_Flip(screen);
         }
     }
 }

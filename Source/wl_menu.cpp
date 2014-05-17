@@ -333,10 +333,8 @@ static byte *ExtScanNames[] =   // Names corresponding to ExtScanCodes
                                         };*/
 
 #else
-#pragma message ("replace me with below")
-static const char* const ScanNames[1] = { "ERROR" };
-/*
-static const char* const ScanNames[SDLK_LAST] =
+
+static const char* const ScanNames[332] =
     {
         "?","?","?","?","?","?","?","?",                                //   0
         "BkSp","Tab","?","?","?","Return","?","?",                      //   8
@@ -380,7 +378,7 @@ static const char* const ScanNames[SDLK_LAST] =
         "?","?","?","?","PrtSc","?","?","?",                            // 312
         "?","?"                                                         // 320
     };
-*/
+
 #endif
 
 ////////////////////////////////////////////////////////////////////
@@ -3861,7 +3859,7 @@ Message (const char *string)
             h += font->height;
         }
         else
-            w += font->width[string[i]];
+            w += font->width[(uint8_t) string[i]];
     }
 
     if (w + 10 > mw)

@@ -38,8 +38,9 @@ unsigned screenHeight = 400;
 unsigned screenBits = -1;      // use "best" color depth according to libSDL
 #endif
 
-SDL_Window *screen = NULL;
-SDL_Renderer *renderer = NULL;
+SDL_Window *screenWindow = NULL;
+SDL_Surface *screen = NULL;
+SDL_Renderer *render = NULL;
 
 unsigned screenPitch;
 
@@ -98,18 +99,21 @@ void	VL_Shutdown (void)
 
 void	VL_SetVGAPlaneMode (void)
 {
+    
     //Determine the screenBits
     if(screenBits == -1)
     {
         #pragma message ("Make it check ALL the displays, not just the main display")
-        SDL_DisplayMode *displayProperties = NULL;
-        if(!SDL_GetDesktopDisplayMode(0, displayProperties))
+        SDL_DisplayMode displayProperties;
+        if(SDL_GetDesktopDisplayMode(0, &displayProperties) != 0)
         {
             printf("Failed to query the main display %s", SDL_GetError());
             exit(-1);
         }
         //const SDL_VideoInfo *vidInfo = SDL_GetVideoInfo();
         //screenBits = vidInfo->vfmt->BitsPerPixel;
+#pragma message ("Hacked to 32bit Bits per pixel")
+        screenBits = 32;
     }
 
 #pragma message ("Readd all these options")
@@ -118,7 +122,7 @@ void	VL_SetVGAPlaneMode (void)
    //                           | (screenBits == 8 ? SDL_HWPALETTE : 0)
    //                           | (fullscreen ? SDL_FULLSCREEN : 0));
     
-    screen = SDL_CreateWindow(
+    screenWindow = SDL_CreateWindow(
                             #ifdef SPEAR
                               "Spear of Destiny",
                             #else
@@ -126,8 +130,16 @@ void	VL_SetVGAPlaneMode (void)
                             #endif
                               SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                               screenWidth, screenHeight,
-                              (SDL_WINDOW_FULLSCREEN ? fullscreen : 0));
-    renderer = SDL_CreateRenderer(screen, -1, 0);
+                              SDL_WINDOW_ALLOW_HIGHDPI);
+                              //(SDL_WINDOW_FULLSCREEN ? fullscreen : 0));
+    screen = SDL_GetWindowSurface(screenWindow);
+    render = SDL_GetRenderer(screenWindow);
+    
+    if(!render)
+    {
+        printf("Unable to create render: %s\n", SDL_GetError());
+        exit(-1);
+    }
     
     if(!screen)
     {
@@ -135,13 +147,16 @@ void	VL_SetVGAPlaneMode (void)
             screenHeight, screenBits, SDL_GetError());
         exit(1);
     }
-        #pragma message ("UNcomment me")
+        #pragma message ("UNcomment me & hack")
     //    if((screen->flags & SDL_DOUBLEBUF) != SDL_DOUBLEBUF)
-    //      usedoublebuffering = false;
+          usedoublebuffering = false;
     SDL_ShowCursor(SDL_DISABLE);
 
-    #pragma message ("UNcomment me")
+    #pragma message ("Verify me")
     //SDL_SetColors(screen, gamepal, 0, 256);
+    SDL_SetPaletteColors(screen->format->palette, gamepal, 0, 256);
+
+    
     memcpy(curpal, gamepal, sizeof(SDL_Color) * 256);
 
     screenBuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, screenWidth,
@@ -151,10 +166,11 @@ void	VL_SetVGAPlaneMode (void)
         printf("Unable to create screen buffer surface: %s\n", SDL_GetError());
         exit(1);
     }
-    #pragma message ("Uncomment me")
+    #pragma message ("Verify me")
+    SDL_SetPaletteColors(screenBuffer->format->palette, gamepal, 0, 256);
     //SDL_SetColors(screenBuffer, gamepal, 0, 256);
-#pragma message ("Uncomment me")
-//    screenPitch = screen->pitch;
+
+    screenPitch = screen->pitch;
     bufferPitch = screenBuffer->pitch;
 
     curSurface = screenBuffer;
@@ -243,10 +259,19 @@ void VL_SetColor	(int color, int red, int green, int blue)
     else
     {
         #pragma message ("Uncomment me")
+    #pragma message ("VIDEO Verify Me")
         //SDL_SetPalette(screen, SDL_PHYSPAL, &col, color, 1);
         //SDL_SetPalette(curSurface, SDL_LOGPAL, &col, color, 1);
-        //SDL_BlitSurface(curSurface, NULL, screen, NULL);
+       
+        
+        SDL_Texture *test = SDL_CreateTextureFromSurface(render, curSurface);
+        SDL_RenderCopy(render, test, NULL, NULL);
+        SDL_RenderPresent(render);
+        // SDL_BlitSurface(curSurface, NULL, screen, NULL);
         //SDL_Flip(screen);
+        
+        
+        
     }
 }
 
@@ -293,8 +318,11 @@ void VL_SetPalette (SDL_Color *palette, bool forceupdate)
         //SDL_SetPalette(curSurface, SDL_LOGPAL, palette, 0, 256);
         if(forceupdate)
         {
-            #pragma message ("Uncomment me")
-//            SDL_BlitSurface(curSurface, NULL, screen, NULL);
+            #pragma message ("VIDEO Verify me")
+            SDL_Texture *test = SDL_CreateTextureFromSurface(render, curSurface);
+            SDL_RenderCopy(render, test, NULL, NULL);
+            SDL_RenderPresent(render);
+            //SDL_BlitSurface(curSurface, NULL, screen, NULL);
 //            SDL_Flip(screen);
         }
     }

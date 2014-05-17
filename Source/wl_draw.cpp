@@ -1626,7 +1626,11 @@ void    ThreeDRefresh (void)
             US_Print(" fps");
         }
 #endif
-#pragma message ("Uncomment me")
+#pragma message ("Verify me")
+        
+        SDL_Texture *test = SDL_CreateTextureFromSurface(render, screenBuffer);
+        SDL_RenderCopy(render, test, NULL, NULL);
+        SDL_RenderPresent(render);
         //SDL_BlitSurface(screenBuffer, NULL, screen, NULL);
         //SDL_Flip(screen);
     }

@@ -1,4 +1,4 @@
-#include "wl_def.h"
+ #include "wl_def.h"
 
 
 pictabletype	*pictable;
@@ -115,9 +115,10 @@ void VW_MeasurePropString (const char *string, word *width, word *height)
 
 void VH_UpdateScreen()
 {
-        #pragma message ("UNcomment me")
-	//SDL_BlitSurface(screenBuffer, NULL, screen, NULL);
-	//SDL_Flip(screen);
+    #pragma message ("VIDEO Verify me")
+    SDL_Texture *test = SDL_CreateTextureFromSurface(render, screenBuffer);
+    SDL_RenderCopy(render, test, NULL, NULL);
+	SDL_RenderPresent(render);
 }
 
 
@@ -232,14 +233,17 @@ void LoadLatchMem (void)
 //
 // tile 8s
 //
-        #pragma message ("UNcomment me")
+    #pragma message ("Verify me")
+    surf = SDL_CreateRGBSurface(0, 8*8, ((NUMTILE8 + 7) / 8) * 8, 8, 0, 0, 0, 0);
     //surf = SDL_CreateRGBSurface(SDL_HWSURFACE, 8*8,
     //    ((NUMTILE8 + 7) / 8) * 8, 8, 0, 0, 0, 0);
+    
     if(surf == NULL)
     {
         Quit("Unable to create surface for tiles!");
     }
-        #pragma message ("UNcomment me")
+    #pragma message ("Verify me")
+    SDL_SetPaletteColors(surf->format->palette, gamepal, 0, 256);
     //SDL_SetColors(surf, gamepal, 0, 256);
 
 	latchpics[0] = surf;
@@ -263,13 +267,15 @@ void LoadLatchMem (void)
 	{
 		width = pictable[i-STARTPICS].width;
 		height = pictable[i-STARTPICS].height;
-		#pragma message ("UNcomment me")
+		#pragma message ("Verify me")
+        surf = SDL_CreateRGBSurface(0, width, height, 8, 0, 0, 0, 0);
         //surf = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 8, 0, 0, 0, 0);
         if(surf == NULL)
         {
             Quit("Unable to create surface for picture!");
         }
-        #pragma message ("UNcomment me")
+        #pragma message ("Verify me")
+        SDL_SetPaletteColors(surf->format->palette, gamepal, 0, 256);
         //SDL_SetColors(surf, gamepal, 0, 256);
 
 		latchpics[2+i-start] = surf;
@@ -361,13 +367,15 @@ boolean FizzleFade (SDL_Surface *source, int x1, int y1,
         if(abortable && IN_CheckAck ())
         {
             VL_UnlockSurface(source);
-            #pragma message ("UNcomment me")
+            #pragma message ("VIDEO Verify me")
+            SDL_Texture *test = SDL_CreateTextureFromSurface(render, source);
+            SDL_RenderCopy(render, test, NULL, NULL);
+            SDL_RenderPresent(render);
             //SDL_BlitSurface(source, NULL, screen, NULL);
             //SDL_Flip(screen);
             return true;
         }
-    #pragma message ("UNcomment me")
-        //byte *destptr = VL_LockSurface(screen);
+        byte *destptr = VL_LockSurface(screen);
 
         rndval = lastrndval;
 
@@ -404,17 +412,16 @@ boolean FizzleFade (SDL_Surface *source, int x1, int y1,
 
                 if(screenBits == 8)
                 {
-                    #pragma message ("UNcomment me")
-                    //*(destptr + (y1 + y) * screen->pitch + x1 + x)
-                    //    = *(srcptr + (y1 + y) * source->pitch + x1 + x);
+                    *(destptr + (y1 + y) * screen->pitch + x1 + x)
+                        = *(srcptr + (y1 + y) * source->pitch + x1 + x);
                 }
                 else
                 {
                     byte col = *(srcptr + (y1 + y) * source->pitch + x1 + x);
-                    #pragma message ("UNcomment me")
-                    //uint32_t fullcol = SDL_MapRGB(screen->format, curpal[col].r, curpal[col].g, curpal[col].b);
-                    //memcpy(destptr + (y1 + y) * screen->pitch + (x1 + x) * screen->format->BytesPerPixel,
-                    //    &fullcol, screen->format->BytesPerPixel);
+                    
+                    uint32_t fullcol = SDL_MapRGB(screen->format, curpal[col].r, curpal[col].g, curpal[col].b);
+                    memcpy(destptr + (y1 + y) * screen->pitch + (x1 + x) * screen->format->BytesPerPixel,
+                        &fullcol, screen->format->BytesPerPixel);
                 }
 
                 if(rndval == 0)		// entire sequence has been completed
@@ -427,8 +434,11 @@ boolean FizzleFade (SDL_Surface *source, int x1, int y1,
         // If there is no double buffering, we always use the "first frame" case
         if(usedoublebuffering) first = 0;
 
-        #pragma message ("UNcomment me")
-        //VL_UnlockSurface(screen);
+        #pragma message ("Verify me")
+        VL_UnlockSurface(screen);
+        SDL_Texture *test = SDL_CreateTextureFromSurface(render, screen);
+        SDL_RenderCopy(render, test, NULL, NULL);
+        SDL_RenderPresent(render);
         //SDL_Flip(screen);
 
         frame++;
@@ -437,11 +447,13 @@ boolean FizzleFade (SDL_Surface *source, int x1, int y1,
 
 finished:
     VL_UnlockSurface(source);
-    #pragma message ("UNcomment me")
-    //VL_UnlockSurface(screen);
-    #pragma message ("UNcomment me")
-    //    SDL_BlitSurface(source, NULL, screen, NULL);
-    #pragma message ("UNcomment me")
+    VL_UnlockSurface(screen);
+    #pragma message ("Verify me")
+    SDL_Texture *test = SDL_CreateTextureFromSurface(render, source);
+    SDL_RenderCopy(render, test, NULL, NULL);
+    SDL_RenderPresent(render);
+
+ //   SDL_BlitSurface(source, NULL, screen, NULL);
 //    SDL_Flip(screen);
     return false;
 }

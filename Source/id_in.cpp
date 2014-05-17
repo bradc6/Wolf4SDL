@@ -401,7 +401,8 @@ IN_Startup(void)
     if(fullscreen || forcegrabmouse)
     {
         GrabInput = true;
-#pragma message ("uncomment Me!")
+#pragma message ("Verify Me!")
+        SDL_SetRelativeMouseMode(SDL_TRUE);
         //SDL_WM_GrabInput(SDL_GRAB_ON);
     }
 
@@ -444,8 +445,7 @@ IN_ClearKeysDown(void)
 {
 	LastScan = sc_None;
 	LastASCII = key_None;
-#pragma message ("Uncomment me")
-	//memset ((void *) Keyboard,0,sizeof(Keyboard));
+	memset ((void *) Keyboard,0,sizeof(Keyboard));
 }
 
 

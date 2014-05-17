@@ -13,8 +13,9 @@ void Quit (const char *error,...);
 
 //===========================================================================
 
-extern SDL_Window *screen;
-extern SDL_Surface *screenBuffer, *curSurface;
+extern SDL_Window *screenWindow;
+extern SDL_Surface  *screen,*screenBuffer, *curSurface;
+extern SDL_Renderer *render;
 
 extern  boolean  fullscreen, usedoublebuffering;
 extern  unsigned screenWidth, screenHeight, screenBits, screenPitch, bufferPitch, curPitch;

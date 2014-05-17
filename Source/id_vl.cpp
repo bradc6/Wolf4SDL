@@ -267,6 +267,7 @@ void VL_SetColor	(int color, int red, int green, int blue)
         SDL_Texture *test = SDL_CreateTextureFromSurface(render, curSurface);
         SDL_RenderCopy(render, test, NULL, NULL);
         SDL_RenderPresent(render);
+        SDL_DestroyTexture(test);
         // SDL_BlitSurface(curSurface, NULL, screen, NULL);
         //SDL_Flip(screen);
         
@@ -322,6 +323,7 @@ void VL_SetPalette (SDL_Color *palette, bool forceupdate)
             SDL_Texture *test = SDL_CreateTextureFromSurface(render, curSurface);
             SDL_RenderCopy(render, test, NULL, NULL);
             SDL_RenderPresent(render);
+            SDL_DestroyTexture(test);
             //SDL_BlitSurface(curSurface, NULL, screen, NULL);
 //            SDL_Flip(screen);
         }

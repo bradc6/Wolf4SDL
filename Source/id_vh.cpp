@@ -119,6 +119,7 @@ void VH_UpdateScreen()
     SDL_Texture *test = SDL_CreateTextureFromSurface(render, screenBuffer);
     SDL_RenderCopy(render, test, NULL, NULL);
 	SDL_RenderPresent(render);
+    SDL_DestroyTexture(test);
 }
 
 
@@ -371,6 +372,7 @@ boolean FizzleFade (SDL_Surface *source, int x1, int y1,
             SDL_Texture *test = SDL_CreateTextureFromSurface(render, source);
             SDL_RenderCopy(render, test, NULL, NULL);
             SDL_RenderPresent(render);
+            SDL_DestroyTexture(test);
             //SDL_BlitSurface(source, NULL, screen, NULL);
             //SDL_Flip(screen);
             return true;
@@ -439,6 +441,7 @@ boolean FizzleFade (SDL_Surface *source, int x1, int y1,
         SDL_Texture *test = SDL_CreateTextureFromSurface(render, screen);
         SDL_RenderCopy(render, test, NULL, NULL);
         SDL_RenderPresent(render);
+        SDL_DestroyTexture(test);
         //SDL_Flip(screen);
 
         frame++;
@@ -452,6 +455,7 @@ finished:
     SDL_Texture *test = SDL_CreateTextureFromSurface(render, source);
     SDL_RenderCopy(render, test, NULL, NULL);
     SDL_RenderPresent(render);
+    SDL_DestroyTexture(test);
 
  //   SDL_BlitSurface(source, NULL, screen, NULL);
 //    SDL_Flip(screen);

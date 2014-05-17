@@ -1631,6 +1631,7 @@ void    ThreeDRefresh (void)
         SDL_Texture *test = SDL_CreateTextureFromSurface(render, screenBuffer);
         SDL_RenderCopy(render, test, NULL, NULL);
         SDL_RenderPresent(render);
+        SDL_DestroyTexture(test);
         //SDL_BlitSurface(screenBuffer, NULL, screen, NULL);
         //SDL_Flip(screen);
     }

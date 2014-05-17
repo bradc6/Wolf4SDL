@@ -2362,7 +2362,7 @@ EnterCtrlData (int index, CustomCtrls * cust, void (*DrawRtn) (int), void (*Prin
                 //
                 // EXIT INPUT?
                 //
-                if (IN_KeyDown (sc_Escape) || type != JOYSTICK && ci.button1)
+                if (IN_KeyDown (sc_Escape) || (type != JOYSTICK && ci.button1))
                 {
                     picked = 1;
                     SD_PlaySound (ESCPRESSEDSND);
@@ -2417,6 +2417,9 @@ EnterCtrlData (int index, CustomCtrls * cust, void (*DrawRtn) (int), void (*Prin
             case dir_North:
             case dir_South:
                 exit = 1;
+            
+            default:
+                break;
         }
     }
     while (!exit);

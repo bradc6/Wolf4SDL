@@ -18,6 +18,7 @@
 //
 
 #include "wl_def.h"
+#include "System/Input/InputManager.hpp"
 
 
 /*

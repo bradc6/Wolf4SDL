@@ -64,6 +64,9 @@ set(WOLF4SDL_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Source)
 set(WOLF4SDL_PLATFORM_DIR ${WOLF4SDL_SOURCE_DIR}/Platforms)
 set(WOLF4SDL_GP2X_DIR ${WOLF4SDL_SOURCE_DIR}/GP2X)
 
+set(WOLF4SDL_SYSTEM_DIR ${WOLF4SDL_SOURCE_DIR}/System)
+set(WOLF4SDL_SYSTEM_INPUT_DIR ${WOLF4SDL_SYSTEM_DIR}/Input)
+
 set(Wolf4SDL-Source
 	${WOLF4SDL_SOURCE_DIR}/audiosod.h
 	${WOLF4SDL_SOURCE_DIR}/audiowl6.h
@@ -117,8 +120,17 @@ set(Wolf4SDL-Source
 	${WOLF4SDL_SOURCE_DIR}/wl_text.cpp
 	)
 
+set(Wolf4SDL-System-Input-Source
+	${WOLF4SDL_SYSTEM_INPUT_DIR}/InputManager.hpp
+	${WOLF4SDL_SYSTEM_INPUT_DIR}/InputManager.cpp
+	)
+
+#Source groupings
+source_group(System\\Input FILES ${Wolf4SDL-System-Input-Source})
+
 add_executable(${CMAKE_PROJECT_NAME} 
 		${Wolf4SDL-Source}
+		${Wolf4SDL-System-Input-Source}
 	)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} ${Wolf4SDLLinkerFlags})

@@ -23,13 +23,25 @@
 
 #include <vector>
 
+
+
 class InputManager
 {
     public:
+        //Structure to allow for different player
+        //keyboard mappings
+        struct PlayerActions
+        {
+            int Forward, Backward, Left, Right,
+                ForwardLeft, ForwardRight, BackwardLeft, BackwardRight,
+                Run, Use, Fire, Strafe, ReadyKnife, ReadyPistol, ReadyMachineGun,
+                ReadyGatlingGun;
+        };
+    
         static void Initialize();
         static void Deinitialize();
     
-        static InputManager *GetInstace();
+        static InputManager *GetInstance();
     
         //Force update the state of all
         //user input devices
@@ -41,9 +53,11 @@ class InputManager
     
         //An array of all the Keyboard Keys
         unsigned int GetNumberOfKeyboardKeys();
-        const Uint8* currentKeyboardState;
+        const Uint8 *currentKeyboardState;
+        const PlayerActions *keyboardPlayerActions;
     
     protected:
+        PlayerActions currentKeyboardPlayerActions;
     private:
     
         InputManager();

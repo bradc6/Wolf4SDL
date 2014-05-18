@@ -472,7 +472,7 @@ US_ControlPanel (ScanCode scancode)
         //
         // EASTER EGG FOR SPEAR OF DESTINY!
         //
-        if (Keyboard[sc_I] && Keyboard[sc_D])
+        if (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_i)] && inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_d)])
         {
             VW_FadeOut ();
             StartCPMusic (XJAZNAZI_MUS);
@@ -497,7 +497,7 @@ US_ControlPanel (ScanCode scancode)
             VL_FadeIn (0, 255, pal, 30);
             UNCACHEGRCHUNK (IDGUYSPALETTE);
 
-            while (Keyboard[sc_I] || Keyboard[sc_D])
+            while (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_i)] || inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_d)])
                 IN_WaitAndProcessEvents();
             IN_ClearKeysDown ();
             IN_Ack ();
@@ -687,7 +687,7 @@ BossKey (void)
     mov eax, 3 int 0x10}
     puts ("C>");
     SetTextCursor (2, 0);
-//      while (!Keyboard[sc_Escape])
+
     IN_Ack ();
     IN_ClearKeysDown ();
 
@@ -715,7 +715,6 @@ BossKey (void)
     mov eax, 3 int 0x10}
     puts ("C>");
     SetTextCursor (2, 0);
-//      while (!Keyboard[sc_Escape])
     IN_Ack ();
     IN_ClearKeysDown ();
 
@@ -1989,9 +1988,9 @@ MouseSensitivity (int)
                 break;
         }
 
-        if (ci.button0 || Keyboard[sc_Space] || Keyboard[sc_Enter])
+        if (ci.button0 || inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_SPACE)] || inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_RETURN)])
             exit = 1;
-        else if (ci.button1 || Keyboard[sc_Escape])
+        else if (ci.button1 || inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_ESCAPE)])
             exit = 2;
 
     }
@@ -2229,12 +2228,13 @@ EnterCtrlData (int index, CustomCtrls * cust, void (*DrawRtn) (int), void (*Prin
         SDL_Delay(5);
         ReadAnyControl (&ci);
 
-        if (type == MOUSE || type == JOYSTICK)
+#pragma message ("Junk code?")
+        /*if (type == MOUSE || type == JOYSTICK)
             if (IN_KeyDown (sc_Enter) || IN_KeyDown (sc_Control) || IN_KeyDown (sc_Alt))
             {
                 IN_ClearKeysDown ();
                 ci.button0 = ci.button1 = false;
-            }
+            }*/
 
         //
         // CHANGE BUTTON VALUE?
@@ -2360,11 +2360,12 @@ EnterCtrlData (int index, CustomCtrls * cust, void (*DrawRtn) (int), void (*Prin
                 //
                 // EXIT INPUT?
                 //
-                if (IN_KeyDown (sc_Escape) || (type != JOYSTICK && ci.button1))
+#pragma message ("Junk Escape code")
+                /*if (IN_KeyDown (sc_Escape) || (type != JOYSTICK && ci.button1))
                 {
                     picked = 1;
                     SD_PlaySound (ESCPRESSEDSND);
-                }
+                }*/
 
                 if(picked) break;
 
@@ -2376,9 +2377,11 @@ EnterCtrlData (int index, CustomCtrls * cust, void (*DrawRtn) (int), void (*Prin
             WaitKeyUp ();
             continue;
         }
+        
+#pragma message ("Junk Escape code")
 
-        if (ci.button1 || IN_KeyDown (sc_Escape))
-            exit = 1;
+//        if (ci.button1 || IN_KeyDown (sc_Escape))
+  //          exit = 1;
 
         //
         // MOVE TO ANOTHER SPOT?
@@ -2871,9 +2874,9 @@ CP_ChangeView (int)
                 break;
         }
 
-        if (ci.button0 || Keyboard[sc_Enter])
+        if (ci.button0 || inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_RETURN)])
             exit = 1;
-        else if (ci.button1 || Keyboard[sc_Escape])
+        else if (ci.button1 || inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_ESCAPE)])
         {
             SD_PlaySound (ESCPRESSEDSND);
             MenuFadeOut ();
@@ -3408,12 +3411,22 @@ HandleMenu (CP_iteminfo * item_i, CP_itemtype * items, void (*routine) (int w))
                 default:
                     break;
         }
+        
+#pragma message ("This is a HACK!! NO mouse setup yet")
+        ci.button0 = 0;
+        ci.button1 = 0;
 
-        if (ci.button0 || Keyboard[sc_Space] || Keyboard[sc_Enter])
+        if (ci.button0 || inputManager->currentKeyboardState[SDL_SCANCODE_SPACE] ||
+            inputManager->currentKeyboardState[SDL_SCANCODE_RETURN])
+        {
             exit = 1;
+        }
 
-        if ((ci.button1 && !Keyboard[sc_Alt]) || Keyboard[sc_Escape])
+        if (ci.button1 || (inputManager->currentKeyboardState[SDL_SCANCODE_LALT] ||
+                            inputManager->currentKeyboardState[SDL_SCANCODE_ESCAPE]))
+        {
             exit = 2;
+        }
 
     }
     while (!exit);
@@ -3604,7 +3617,9 @@ WaitKeyUp (void)
     ControlInfo ci;
     while (ReadAnyControl (&ci), ci.button0 |
            ci.button1 |
-           ci.button2 | ci.button3 | Keyboard[sc_Space] | Keyboard[sc_Enter] | Keyboard[sc_Escape])
+           ci.button2 | ci.button3 | inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_SPACE)] |
+                                     inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_RETURN)] |
+                                    inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_ESCAPE)])
     {
         IN_WaitAndProcessEvents();
     }
@@ -3742,20 +3757,25 @@ Confirm (const char *string)
 
 #ifdef SPANISH
     }
-    while (!Keyboard[sc_S] && !Keyboard[sc_N] && !Keyboard[sc_Escape]);
+    while (!inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_s)]] &&
+           !inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_n)] &&
+           !inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_ESCAPE)]);
 #else
     }
-    while (!Keyboard[sc_Y] && !Keyboard[sc_N] && !Keyboard[sc_Escape] && !ci.button0 && !ci.button1);
+    while (!inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_y)] &&
+           !inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_n)] &&
+           !inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_ESCAPE)] &&
+           !ci.button0 && !ci.button1);
 #endif
 
 #ifdef SPANISH
-    if (Keyboard[sc_S] || ci.button0)
+    if (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_s)]] || ci.button0)
     {
         xit = 1;
         ShootSnd ();
     }
 #else
-    if (Keyboard[sc_Y] || ci.button0)
+    if (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_y)] || ci.button0)
     {
         xit = 1;
         ShootSnd ();
@@ -3792,37 +3812,45 @@ GetYorN (int x, int y, int pic)
     {
         IN_WaitAndProcessEvents();
 #ifndef SPEAR
-        if (Keyboard[sc_Tab] && Keyboard[sc_P] && param_debugmode)
+        if (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_TAB)] && inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_p)] && param_debugmode)
             PicturePause ();
 #endif
 
 #ifdef SPANISH
     }
-    while (!Keyboard[sc_S] && !Keyboard[sc_N] && !Keyboard[sc_Escape]);
+    while (!inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_s)] &&
+           !inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_n)] &&
+           !inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_ESCAPE)]);
 #else
     }
-    while (!Keyboard[sc_Y] && !Keyboard[sc_N] && !Keyboard[sc_Escape]);
+    while (!inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_y)] &&
+           !inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_n)] &&
+           !inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_ESCAPE)]);
 #endif
 
 #ifdef SPANISH
-    if (Keyboard[sc_S])
+    if (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_s)])
     {
         xit = 1;
         ShootSnd ();
     }
 
-    while (Keyboard[sc_S] || Keyboard[sc_N] || Keyboard[sc_Escape])
+    while (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_s)] ||
+           inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_n)] ||
+           inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_ESCAPE)])
         IN_WaitAndProcessEvents();
 
 #else
 
-    if (Keyboard[sc_Y])
+    if (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_y)])
     {
         xit = 1;
         ShootSnd ();
     }
 
-    while (Keyboard[sc_Y] || Keyboard[sc_N] || Keyboard[sc_Escape])
+    while (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_y)] ||
+           inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_n)] ||
+           inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_ESCAPE)])
         IN_WaitAndProcessEvents();
 #endif
 

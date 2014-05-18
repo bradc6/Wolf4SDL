@@ -19,6 +19,7 @@
 #	include <stdarg.h>
 #endif
 #include <SDL2/SDL.h>
+#include "System/Input/InputManager.hpp"
 
 #if !defined O_BINARY
 #	define O_BINARY 0
@@ -803,23 +804,23 @@ enum
 {
     bt_nobutton=-1,
     bt_attack=0,
-    bt_strafe,
-    bt_run,
-    bt_use,
-    bt_readyknife,
-    bt_readypistol,
-    bt_readymachinegun,
-    bt_readychaingun,
-    bt_nextweapon,
-    bt_prevweapon,
-    bt_esc,
-    bt_pause,
-    bt_strafeleft,
-    bt_straferight,
-    bt_moveforward,
-    bt_movebackward,
-    bt_turnleft,
-    bt_turnright,
+    bt_strafe=1,
+    bt_run=2,
+    bt_use=3,
+    bt_readyknife=4,
+    bt_readypistol=5,
+    bt_readymachinegun=6,
+    bt_readychaingun=7,
+    bt_nextweapon=8,
+    bt_prevweapon=9,
+    bt_esc=10,
+    bt_pause=11,
+    bt_strafeleft=12,
+    bt_straferight=13,
+    bt_moveforward=14,
+    bt_movebackward=15,
+    bt_turnleft=16,
+    bt_turnright=17,
     NUMBUTTONS
 };
 
@@ -941,7 +942,7 @@ boolean         SaveTheGame(FILE *file,int x,int y);
 void            ShowViewSize (int width);
 void            ShutdownId (void);
 
-
+extern InputManager *inputManager;
 /*
 =============================================================================
 

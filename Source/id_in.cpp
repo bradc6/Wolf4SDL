@@ -18,7 +18,6 @@
 //
 
 #include "wl_def.h"
-#include "System/Input/InputManager.hpp"
 
 
 /*
@@ -38,25 +37,14 @@ boolean forcegrabmouse;
 
 
 // 	Global variables
-volatile boolean    Keyboard[332];
-const Uint8* currentKeyboardState = SDL_GetKeyboardState( NULL );
 
 volatile boolean	Paused;
 volatile char		LastASCII;
 volatile ScanCode	LastScan;
 
-static KeyboardDef KbdDefs = {
-    sc_Control,             // button0
-    sc_Alt,                 // button1
-    sc_Home,                // upleft
-    sc_UpArrow,             // up
-    sc_PgUp,                // upright
-    sc_LeftArrow,           // left
-    sc_RightArrow,          // right
-    sc_End,                 // downleft
-    sc_DownArrow,           // down
-    sc_PgDn                 // downright
-};
+
+
+InputManager *inputManager = InputManager::GetInstance();
 
 static SDL_Joystick *Joystick;
 int JoyNumButtons;
@@ -248,6 +236,7 @@ static void processEvent(SDL_Event *event)
             Quit(NULL);
         }
 
+#pragma message ("Keyboard hack here")
         // check for keypresses
         case SDL_KEYDOWN:
         {
@@ -264,7 +253,7 @@ static void processEvent(SDL_Event *event)
         
            if((mod & KMOD_ALT) != 0)
             {
-                if(currentKeyboardState[SDL_SCANCODE_F4])
+                if(inputManager->currentKeyboardState[SDL_SCANCODE_F4])
                     Quit(NULL);
             }
 
@@ -301,9 +290,7 @@ static void processEvent(SDL_Event *event)
                     LastASCII = ASCIINames[sym];
             }
 
-            if(LastScan< 332)
-                Keyboard[LastScan] = 1;
-            if(LastScan == SDLK_PAUSE)
+            if(SDL_GetKeyFromScancode(event->key.keysym.scancode) == SDLK_PAUSE)
                 Paused = true;
             break;
 		}
@@ -330,8 +317,6 @@ static void processEvent(SDL_Event *event)
                 }
             }
 
-            if(key<332)
-                Keyboard[key] = 0;
             break;
         }
 
@@ -441,7 +426,7 @@ IN_ClearKeysDown(void)
 {
 	LastScan = sc_None;
 	LastASCII = key_None;
-	memset ((void *) Keyboard,0,sizeof(Keyboard));
+	//memset ((void *) Keyboard,0,sizeof(Keyboard));
 }
 
 
@@ -464,42 +449,29 @@ IN_ReadControl(int player,ControlInfo *info)
 
 	IN_ProcessEvents();
 #pragma message ("Hack Here")
-
-    KbdDefs.upleft = 0;
-    KbdDefs.up = SDL_SCANCODE_UP;
-    KbdDefs.upright = 0;
-    KbdDefs.left = SDL_SCANCODE_LEFT;
-    KbdDefs.right = SDL_SCANCODE_RIGHT;
-    KbdDefs.downleft = 0;
-    KbdDefs.downright = 0;
-    KbdDefs.down = SDL_SCANCODE_DOWN;
-    
-    KbdDefs.button0 = SDL_SCANCODE_LCTRL;
-    KbdDefs.button1 = SDL_SCANCODE_SPACE;
-    
-    
-    if (currentKeyboardState[KbdDefs.upleft])
+        
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->ForwardLeft])
         mx = motion_Left,my = motion_Up;
-    else if (currentKeyboardState[KbdDefs.upright])
+    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->ForwardRight])
         mx = motion_Right,my = motion_Up;
-    else if (currentKeyboardState[KbdDefs.downleft])
+    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->BackwardLeft])
         mx = motion_Left,my = motion_Down;
-    else if (currentKeyboardState[KbdDefs.downright])
+    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->BackwardRight])
         mx = motion_Right,my = motion_Down;
 
-    if (currentKeyboardState[KbdDefs.up])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Forward])
         my = motion_Up;
-    else if (currentKeyboardState[KbdDefs.down])
+    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Backward])
         my = motion_Down;
 
-    if (currentKeyboardState[KbdDefs.left])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Left])
         mx = motion_Left;
-    else if (currentKeyboardState[KbdDefs.right])
+    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Right])
         mx = motion_Right;
 
-    if (currentKeyboardState[KbdDefs.button0])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Fire])
         buttons += 1 << 0;
-    if (currentKeyboardState[KbdDefs.button1])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Use])
         buttons += 1 << 1;
 
 	dx = mx * 127;

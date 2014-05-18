@@ -1290,7 +1290,7 @@ static void InitGame()
 // HOLDING DOWN 'M' KEY?
 //
 #ifndef SPEARDEMO
-    if (Keyboard[sc_M])
+    if (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_m)])
     {
         DoJukebox();
         didjukebox=true;
@@ -1648,7 +1648,7 @@ static void DemoLoop()
         VW_FadeOut ();
 
 #ifdef DEBUGKEYS
-        if (Keyboard[sc_Tab] && param_debugmode)
+        if (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_TAB)] && param_debugmode)
             RecordDemo ();
         else
             US_ControlPanel (0);
@@ -1947,13 +1947,16 @@ int main (int argc, char *argv[])
 #else
     CheckParameters(argc, argv);
 #endif
-
+    
+    InputManager::Initialize();
+    
     CheckForEpisodes();
 
     InitGame();
 
     DemoLoop();
 
+    InputManager::Deinitialize();
     Quit("Demo loop exited???");
     return 1;
 }

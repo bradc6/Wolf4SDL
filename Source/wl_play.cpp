@@ -28,6 +28,7 @@ boolean madenoise;              // true when shooting or screaming
 
 exit_t playstate;
 
+
 static musicnames lastmusicchunk = (musicnames) 0;
 
 static int DebugOk;
@@ -245,22 +246,6 @@ int songs[] = {
 =============================================================================
 */
 
-/*
-===================
-=
-= PollKeyboardButtons
-=
-===================
-*/
-
-void PollKeyboardButtons (void)
-{
-    int i;
-
-    for (i = 0; i < NUMBUTTONS; i++)
-        if (Keyboard[buttonscan[i]])
-            buttonstate[i] = true;
-}
 
 
 /*
@@ -315,15 +300,18 @@ void PollJoystickButtons (void)
 
 void PollKeyboardMove (void)
 {
-    int delta = buttonstate[bt_run] ? RUNMOVE * tics : BASEMOVE * tics;
+    int delta = inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Run] ? RUNMOVE * tics : BASEMOVE * tics;
 
-    if (Keyboard[dirscan[di_north]])
+    
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Forward])
         controly -= delta;
-    if (Keyboard[dirscan[di_south]])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Backward])
         controly += delta;
-    if (Keyboard[dirscan[di_west]])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Left] &&
+        !inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe])
         controlx -= delta;
-    if (Keyboard[dirscan[di_east]])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Right] &&
+        !inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe])
         controlx += delta;
 }
 
@@ -453,7 +441,6 @@ void PollControls (void)
 //
 // get button states
 //
-    PollKeyboardButtons ();
 
     if (mouseenabled && IN_IsInputGrabbed())
         PollMouseButtons ();
@@ -565,7 +552,9 @@ void CheckKeys (void)
     //
     // SECRET CHEAT CODE: TAB-G-F10
     //
-    if (Keyboard[sc_Tab] && Keyboard[sc_G] && Keyboard[sc_F10])
+    if (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_TAB)] &&
+        inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_G)] &&
+        inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_F10)])
     {
         WindowH = 160;
         if (godmode)
@@ -591,7 +580,9 @@ void CheckKeys (void)
     //
     // SECRET CHEAT CODE: 'MLI'
     //
-    if (Keyboard[sc_M] && Keyboard[sc_L] && Keyboard[sc_I])
+    if (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_m)] &&
+        inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_l)] &&
+        inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_i)])
     {
         gamestate.health = 100;
         gamestate.ammo = 99;
@@ -624,7 +615,10 @@ void CheckKeys (void)
     // OPEN UP DEBUG KEYS
     //
 #ifdef DEBUGKEYS
-    if (Keyboard[sc_BackSpace] && Keyboard[sc_LShift] && Keyboard[sc_Alt] && param_debugmode)
+    if(inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_LSHIFT)] &&
+       inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_LALT)] &&
+       inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_BACKSPACE)] &&
+       param_debugmode)
     {
         ClearMemory ();
         CA_CacheGrChunk (STARTFONT + 1);
@@ -643,7 +637,9 @@ void CheckKeys (void)
     //
     // TRYING THE KEEN CHEAT CODE!
     //
-    if (Keyboard[sc_B] && Keyboard[sc_A] && Keyboard[sc_T])
+    if (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_b)] &&
+        inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_a)] &&
+        inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_t)])
     {
         ClearMemory ();
         CA_CacheGrChunk (STARTFONT + 1);
@@ -726,7 +722,7 @@ void CheckKeys (void)
 // TAB-? debug keys
 //
 #ifdef DEBUGKEYS
-    if (Keyboard[sc_Tab] && DebugOk)
+    if (inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_TAB)] && DebugOk)
     {
         CA_CacheGrChunk (STARTFONT);
         fontnumber = 0;

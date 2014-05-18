@@ -172,23 +172,25 @@ void ControlMovement (objtype *ob)
     oldx = player->x;
     oldy = player->y;
 
-    if(buttonstate[bt_strafeleft])
+    if(inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Left] &&
+       inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe])
     {
         angle = ob->angle + ANGLES/4;
         if(angle >= ANGLES)
             angle -= ANGLES;
-        if(buttonstate[bt_run])
+        if(inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Run])
             Thrust(angle, RUNMOVE * MOVESCALE * tics);
         else
             Thrust(angle, BASEMOVE * MOVESCALE * tics);
     }
 
-    if(buttonstate[bt_straferight])
+    if(inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Right] &&
+       inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe])
     {
         angle = ob->angle - ANGLES/4;
         if(angle < 0)
             angle += ANGLES;
-        if(buttonstate[bt_run])
+        if(inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Run])
             Thrust(angle, RUNMOVE * MOVESCALE * tics );
         else
             Thrust(angle, BASEMOVE * MOVESCALE * tics);
@@ -1142,11 +1144,12 @@ void Cmd_Use (void)
         PushWall (checkx,checky,dir);
         return;
     }
-    if (!buttonheld[bt_use] && doornum == ELEVATORTILE && elevatorok)
+    if (!inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe] && doornum == ELEVATORTILE && elevatorok)
     {
         //
         // use elevator
         //
+#pragma ("Junk code")
         buttonheld[bt_use] = true;
 
         tilemap[checkx][checky]++;              // flip switch
@@ -1486,10 +1489,10 @@ void    T_Player (objtype *ob)
     UpdateFace ();
     CheckWeaponChange ();
 
-    if ( buttonstate[bt_use] )
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Use])
         Cmd_Use ();
 
-    if ( buttonstate[bt_attack] && !buttonheld[bt_attack])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Fire] && !buttonheld[bt_attack])
         Cmd_Fire ();
 
     ControlMovement (ob);

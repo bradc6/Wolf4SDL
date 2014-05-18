@@ -1043,7 +1043,7 @@ void DrawPlayerWeapon (void)
     }
 #endif
 
-    shapenum = weaponscale[gamestate.weapon]+gamestate.weaponframe;
+    shapenum = weaponscale[gamestate.weapon] + gamestate.weaponframe;
     SimpleScaleShape(viewwidth/2,shapenum,viewheight+1);
 
     if (demorecord || demoplayback)
@@ -1593,7 +1593,7 @@ void    ThreeDRefresh (void)
 
     DrawPlayerWeapon ();    // draw player's hands
 
-    if(Keyboard[sc_Tab] && viewsize == 21)
+    if(viewsize == 21 && inputManager->currentKeyboardState[SDL_GetScancodeFromKey(SDLK_TAB)])
         ShowActStatus();
 
     VL_UnlockSurface(screenBuffer);

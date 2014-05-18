@@ -1042,10 +1042,11 @@ void DrawPlayerWeapon (void)
         return;
     }
 #endif
-
-    shapenum = weaponscale[gamestate.weapon] + gamestate.weaponframe;
-    SimpleScaleShape(viewwidth/2,shapenum,viewheight+1);
-
+    if (gamestate.weapon != -1)
+    {
+        shapenum = weaponscale[gamestate.weapon] + gamestate.weaponframe;
+        SimpleScaleShape(viewwidth/2,shapenum,viewheight+1);
+    }
     if (demorecord || demoplayback)
         SimpleScaleShape(viewwidth/2,SPR_DEMO,viewheight+1);
 }

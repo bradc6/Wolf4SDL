@@ -44,9 +44,6 @@ InputManager::InputManager()
     currentKeyboardPlayerActions.Strafe = SDL_SCANCODE_LALT;
     
     currentKeyboardPlayerActions.ReadyKnife = SDL_GetScancodeFromKey(SDLK_1);
-    currentKeyboardPlayerActions.ReadyPistol = SDL_GetScancodeFromKey(SDLK_2);
-    currentKeyboardPlayerActions.ReadyMachineGun = SDL_GetScancodeFromKey(SDLK_3);
-    currentKeyboardPlayerActions.ReadyGatlingGun = SDL_GetScancodeFromKey(SDLK_4);
     
     
     keyboardPlayerActions = &currentKeyboardPlayerActions;

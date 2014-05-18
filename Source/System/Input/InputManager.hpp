@@ -34,8 +34,7 @@ class InputManager
         {
             int Forward, Backward, Left, Right,
                 ForwardLeft, ForwardRight, BackwardLeft, BackwardRight,
-                Run, Use, Fire, Strafe, ReadyKnife, ReadyPistol, ReadyMachineGun,
-                ReadyGatlingGun;
+                Run, Use, Fire, Strafe, ReadyKnife;
         };
     
         static void Initialize();

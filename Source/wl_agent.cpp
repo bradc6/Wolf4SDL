@@ -130,7 +130,7 @@ void CheckWeaponChange (void)
     {
         for(int i = wp_knife; i <= gamestate.bestweapon; i++)
         {
-            if (buttonstate[bt_readyknife + i - wp_knife])
+            if (inputManager->currentKeyboardState[bt_readyknife + i - wp_knife])
             {
                 newWeapon = i;
                 break;
@@ -1390,12 +1390,14 @@ void    T_Attack (objtype *ob)
         return;
     }
 
+#pragma message ("Junk Code?")
+    /*
     if ( buttonstate[bt_use] && !buttonheld[bt_use] )
         buttonstate[bt_use] = false;
 
     if ( buttonstate[bt_attack] && !buttonheld[bt_attack])
         buttonstate[bt_attack] = false;
-
+     */
     ControlMovement (ob);
     if (gamestate.victoryflag)              // watching the BJ actor
         return;
@@ -1435,7 +1437,7 @@ void    T_Attack (objtype *ob)
             case 4:
                 if (!gamestate.ammo)
                     break;
-                if (buttonstate[bt_attack])
+                if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Fire])
                     gamestate.attackframe -= 2;
             case 1:
                 if (!gamestate.ammo)
@@ -1454,7 +1456,7 @@ void    T_Attack (objtype *ob)
                 break;
 
             case 3:
-                if (gamestate.ammo && buttonstate[bt_attack])
+                if (gamestate.ammo && inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Fire])
                     gamestate.attackframe -= 2;
                 break;
         }

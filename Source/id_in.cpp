@@ -38,6 +38,7 @@ boolean forcegrabmouse;
 
 // 	Global variables
 volatile boolean    Keyboard[332];
+const Uint8* currentKeyboardState = SDL_GetKeyboardState( NULL );
 
 volatile boolean	Paused;
 volatile char		LastASCII;
@@ -257,7 +258,6 @@ static void processEvent(SDL_Event *event)
                 return;
             }
             
-            const Uint8* currentKeyboardState = SDL_GetKeyboardState( NULL );
             LastScan = event->key.keysym.sym;
             SDL_Keymod mod = SDL_GetModState();
         
@@ -464,29 +464,42 @@ IN_ReadControl(int player,ControlInfo *info)
 	IN_ProcessEvents();
 #pragma message ("Hack Here")
 
-    /*if (Keyboard[KbdDefs.upleft])
+    KbdDefs.upleft = 0;
+    KbdDefs.up = SDL_SCANCODE_UP;
+    KbdDefs.upright = 0;
+    KbdDefs.left = SDL_SCANCODE_LEFT;
+    KbdDefs.right = SDL_SCANCODE_RIGHT;
+    KbdDefs.downleft = 0;
+    KbdDefs.downright = 0;
+    KbdDefs.down = SDL_SCANCODE_DOWN;
+    
+    KbdDefs.button0 = SDL_SCANCODE_LCTRL;
+    KbdDefs.button1 = SDL_SCANCODE_SPACE;
+    
+    
+    if (currentKeyboardState[KbdDefs.upleft])
         mx = motion_Left,my = motion_Up;
-    else if (Keyboard[KbdDefs.upright])
+    else if (currentKeyboardState[KbdDefs.upright])
         mx = motion_Right,my = motion_Up;
-    else if (Keyboard[KbdDefs.downleft])
+    else if (currentKeyboardState[KbdDefs.downleft])
         mx = motion_Left,my = motion_Down;
-    else if (Keyboard[KbdDefs.downright])
+    else if (currentKeyboardState[KbdDefs.downright])
         mx = motion_Right,my = motion_Down;
 
-    if (Keyboard[KbdDefs.up])
+    if (currentKeyboardState[KbdDefs.up])
         my = motion_Up;
-    else if (Keyboard[KbdDefs.down])
+    else if (currentKeyboardState[KbdDefs.down])
         my = motion_Down;
 
-    if (Keyboard[KbdDefs.left])
+    if (currentKeyboardState[KbdDefs.left])
         mx = motion_Left;
-    else if (Keyboard[KbdDefs.right])
+    else if (currentKeyboardState[KbdDefs.right])
         mx = motion_Right;
 
-    if (Keyboard[KbdDefs.button0])
+    if (currentKeyboardState[KbdDefs.button0])
         buttons += 1 << 0;
-    if (Keyboard[KbdDefs.button1])
-        buttons += 1 << 1;*/
+    if (currentKeyboardState[KbdDefs.button1])
+        buttons += 1 << 1;
 
 	dx = mx * 127;
 	dy = my * 127;

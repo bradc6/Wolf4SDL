@@ -300,18 +300,18 @@ void PollJoystickButtons (void)
 
 void PollKeyboardMove (void)
 {
-    int delta = inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Run] ? RUNMOVE * tics : BASEMOVE * tics;
+    int delta = inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Run.assignedButton] ? RUNMOVE * tics : BASEMOVE * tics;
 
     
-    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Forward])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Forward.assignedButton])
         controly -= delta;
-    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Backward])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Backward.assignedButton])
         controly += delta;
-    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Left] &&
-        !inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Left.assignedButton] &&
+        !inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe.assignedButton])
         controlx -= delta;
-    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Right] &&
-        !inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Right.assignedButton] &&
+        !inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe.assignedButton])
         controlx += delta;
 }
 

@@ -450,28 +450,28 @@ IN_ReadControl(int player,ControlInfo *info)
 	IN_ProcessEvents();
 #pragma message ("Hack Here")
         
-    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->ForwardLeft])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->ForwardLeft.assignedButton])
         mx = motion_Left,my = motion_Up;
-    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->ForwardRight])
+    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->ForwardRight.assignedButton])
         mx = motion_Right,my = motion_Up;
-    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->BackwardLeft])
+    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->BackwardLeft.assignedButton])
         mx = motion_Left,my = motion_Down;
-    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->BackwardRight])
+    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->BackwardRight.assignedButton])
         mx = motion_Right,my = motion_Down;
 
-    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Forward])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Forward.assignedButton])
         my = motion_Up;
-    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Backward])
+    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Backward.assignedButton])
         my = motion_Down;
 
-    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Left])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Left.assignedButton])
         mx = motion_Left;
-    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Right])
+    else if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Right.assignedButton])
         mx = motion_Right;
 
-    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Fire])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Fire.assignedButton])
         buttons += 1 << 0;
-    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Use])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Use.assignedButton])
         buttons += 1 << 1;
 
 	dx = mx * 127;

@@ -116,6 +116,24 @@ void CheckWeaponChange (void)
         buttonstate[bt_nextweapon] = true;
 #endif
 
+    
+    if (inputManager->keyboardPlayerActions->ReadyKnife.assignedButton)
+    {
+        newWeapon = wp_knife;
+    }
+    if (inputManager->keyboardPlayerActions->ReadyPistol.assignedButton)
+    {
+        newWeapon = wp_pistol;
+    }
+    if (inputManager->keyboardPlayerActions->ReadyMachinegun.assignedButton)
+    {
+        newWeapon = wp_machinegun;
+    }
+    if (inputManager->keyboardPlayerActions->ReadyChaingun.assignedButton)
+    {
+        newWeapon = wp_chaingun;
+    }
+    
     if(buttonstate[bt_nextweapon] && !buttonheld[bt_nextweapon])
     {
         newWeapon = gamestate.weapon + 1;
@@ -128,14 +146,16 @@ void CheckWeaponChange (void)
     }
     else
     {
-        for(int i = wp_knife; i <= gamestate.bestweapon; i++)
+#pragma message ("Hacked all weapons open")
+        
+        /*for(int i = wp_knife; i <= gamestate.bestweapon; i++)
         {
-            if (inputManager->currentKeyboardState[bt_readyknife + i - wp_knife])
+            if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->ReadyKnife + i - wp_knife])
             {
                 newWeapon = i;
                 break;
             }
-        }
+        }*/
     }
 
     if(newWeapon != -1)
@@ -172,25 +192,25 @@ void ControlMovement (objtype *ob)
     oldx = player->x;
     oldy = player->y;
 
-    if(inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Left] &&
-       inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe])
+    if(inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Left.assignedButton] &&
+       inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe.assignedButton])
     {
         angle = ob->angle + ANGLES/4;
         if(angle >= ANGLES)
             angle -= ANGLES;
-        if(inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Run])
+        if(inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Run.assignedButton])
             Thrust(angle, RUNMOVE * MOVESCALE * tics);
         else
             Thrust(angle, BASEMOVE * MOVESCALE * tics);
     }
 
-    if(inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Right] &&
-       inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe])
+    if(inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Right.assignedButton] &&
+       inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe.assignedButton])
     {
         angle = ob->angle - ANGLES/4;
         if(angle < 0)
             angle += ANGLES;
-        if(inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Run])
+        if(inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Run.assignedButton])
             Thrust(angle, RUNMOVE * MOVESCALE * tics );
         else
             Thrust(angle, BASEMOVE * MOVESCALE * tics);
@@ -1144,7 +1164,7 @@ void Cmd_Use (void)
         PushWall (checkx,checky,dir);
         return;
     }
-    if (!inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe] && doornum == ELEVATORTILE && elevatorok)
+    if (!inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Strafe.assignedButton] && doornum == ELEVATORTILE && elevatorok)
     {
         //
         // use elevator
@@ -1437,7 +1457,7 @@ void    T_Attack (objtype *ob)
             case 4:
                 if (!gamestate.ammo)
                     break;
-                if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Fire])
+                if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Fire.assignedButton])
                     gamestate.attackframe -= 2;
             case 1:
                 if (!gamestate.ammo)
@@ -1456,7 +1476,7 @@ void    T_Attack (objtype *ob)
                 break;
 
             case 3:
-                if (gamestate.ammo && inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Fire])
+                if (gamestate.ammo && inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Fire.assignedButton])
                     gamestate.attackframe -= 2;
                 break;
         }
@@ -1491,10 +1511,10 @@ void    T_Player (objtype *ob)
     UpdateFace ();
     CheckWeaponChange ();
 
-    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Use])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Use.assignedButton])
         Cmd_Use ();
 
-    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Fire] && !buttonheld[bt_attack])
+    if (inputManager->currentKeyboardState[inputManager->keyboardPlayerActions->Fire.assignedButton] && !buttonheld[bt_attack])
         Cmd_Fire ();
 
     ControlMovement (ob);

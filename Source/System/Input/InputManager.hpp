@@ -30,11 +30,18 @@ class InputManager
     public:
         //Structure to allow for different player
         //keyboard mappings
+        struct ButtonState
+        {
+            unsigned int assignedButton;
+            bool buttonHeld = false;
+        };
+    
         struct PlayerActions
         {
-            int Forward, Backward, Left, Right,
+            ButtonState Forward, Backward, Left, Right,
                 ForwardLeft, ForwardRight, BackwardLeft, BackwardRight,
-                Run, Use, Fire, Strafe, ReadyKnife;
+                Run, Use, Fire, Strafe, ReadyKnife, ReadyPistol, ReadyMachinegun,
+                ReadyChaingun;
         };
     
         static void Initialize();

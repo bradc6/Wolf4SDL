@@ -130,8 +130,8 @@ void	VL_SetVGAPlaneMode (void)
                             #endif
                               SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                               screenWidth, screenHeight,
-                                //   SDL_WINDOW_ALLOW_HIGHDPI);
-                              (SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_FULLSCREEN_DESKTOP));
+                                   SDL_WINDOW_ALLOW_HIGHDPI);
+                              //(SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_FULLSCREEN_DESKTOP));
                               //(SDL_WINDOW_FULLSCREEN ? fullscreen : 0));
     screen = SDL_GetWindowSurface(screenWindow);
     render = SDL_GetRenderer(screenWindow);

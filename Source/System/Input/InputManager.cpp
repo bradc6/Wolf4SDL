@@ -28,22 +28,25 @@ InputManager::InputManager()
     
     //Setup some default player actions, if there are
     //custom keyboard actions these will be replaced
-    currentKeyboardPlayerActions.Forward  = SDL_SCANCODE_UP;
-    currentKeyboardPlayerActions.Backward = SDL_SCANCODE_DOWN;
-    currentKeyboardPlayerActions.Left = SDL_SCANCODE_LEFT;
-    currentKeyboardPlayerActions.Right = SDL_SCANCODE_RIGHT;
+    currentKeyboardPlayerActions.Forward.assignedButton  = SDL_SCANCODE_UP;
+    currentKeyboardPlayerActions.Backward.assignedButton = SDL_SCANCODE_DOWN;
+    currentKeyboardPlayerActions.Left.assignedButton = SDL_SCANCODE_LEFT;
+    currentKeyboardPlayerActions.Right.assignedButton = SDL_SCANCODE_RIGHT;
     
-    currentKeyboardPlayerActions.ForwardLeft = SDL_SCANCODE_HOME;
-    currentKeyboardPlayerActions.ForwardRight = SDL_SCANCODE_PAGEUP;
-    currentKeyboardPlayerActions.BackwardLeft = SDL_SCANCODE_END;
-    currentKeyboardPlayerActions.BackwardRight = SDL_SCANCODE_PAGEDOWN;
+    currentKeyboardPlayerActions.ForwardLeft.assignedButton = SDL_SCANCODE_HOME;
+    currentKeyboardPlayerActions.ForwardRight.assignedButton = SDL_SCANCODE_PAGEUP;
+    currentKeyboardPlayerActions.BackwardLeft.assignedButton = SDL_SCANCODE_END;
+    currentKeyboardPlayerActions.BackwardRight.assignedButton = SDL_SCANCODE_PAGEDOWN;
     
-    currentKeyboardPlayerActions.Run = SDL_SCANCODE_LSHIFT;
-    currentKeyboardPlayerActions.Use = SDL_SCANCODE_SPACE;
-    currentKeyboardPlayerActions.Fire = SDL_SCANCODE_LCTRL;
-    currentKeyboardPlayerActions.Strafe = SDL_SCANCODE_LALT;
+    currentKeyboardPlayerActions.Run.assignedButton = SDL_SCANCODE_LSHIFT;
+    currentKeyboardPlayerActions.Use.assignedButton = SDL_SCANCODE_SPACE;
+    currentKeyboardPlayerActions.Fire.assignedButton = SDL_SCANCODE_LCTRL;
+    currentKeyboardPlayerActions.Strafe.assignedButton = SDL_SCANCODE_LALT;
     
-    currentKeyboardPlayerActions.ReadyKnife = SDL_GetScancodeFromKey(SDLK_1);
+    currentKeyboardPlayerActions.ReadyKnife.assignedButton = SDL_GetScancodeFromKey(SDLK_1);
+    currentKeyboardPlayerActions.ReadyPistol.assignedButton = SDL_GetScancodeFromKey(SDLK_2);
+    currentKeyboardPlayerActions.ReadyMachinegun.assignedButton = SDL_GetScancodeFromKey(SDLK_3);
+    currentKeyboardPlayerActions.ReadyChaingun.assignedButton = SDL_GetScancodeFromKey(SDLK_4);
     
     
     keyboardPlayerActions = &currentKeyboardPlayerActions;
@@ -63,12 +66,12 @@ void InputManager::ForceUpdateStateAll()
 
 void InputManager::ForceUpdateStateKeyboard()
 {
-    
+    currentKeyboardState = SDL_GetKeyboardState(NULL);
 }
 
 void InputManager::ForceUpdateStateMouse()
 {
-    currentKeyboardState = SDL_GetKeyboardState(NULL);
+
 }
 
 void InputManager::ForceUpdateStateJoystick()
